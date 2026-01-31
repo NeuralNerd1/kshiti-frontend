@@ -1,0 +1,21 @@
+label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+}

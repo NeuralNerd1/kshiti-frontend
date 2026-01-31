@@ -1,0 +1,44 @@
+.card {
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  border-color: #4F46E5;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #F9FAFB;
+}
+
+.description {
+  font-size: 13px;
+  color: #9CA3AF;
+  line-height: 1.4;
+}
+
+.meta {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: #CBD5E1;
+  margin-top: auto;
+}

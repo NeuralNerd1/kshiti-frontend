@@ -1,0 +1,390 @@
+/* ======================================================
+   ROOT LAYOUT
+====================================================== */
+
+.builder-root {
+  height: 100vh;              /* 🔥 FIX */
+  width: 100%;
+  background: #0b1020;
+  display: flex;
+  flex-direction: column;
+  color: #e5e7eb;
+  overflow: hidden;           /* 🔥 FIX */
+}
+
+.builder-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+  position: relative; /* 🔥 REQUIRED FOR STICKY */
+}
+/* ======================================================
+   HEADER
+====================================================== */
+
+.builder-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 72px;
+  padding: 12px 24px;
+
+  background: #0b1020;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  z-index: 1000;
+}
+
+
+
+.builder-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.builder-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.builder-actions {
+  display: flex;
+  align-items: center;
+}
+
+.builder-version-save {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.versionSelect {
+  min-width: 140px;
+  height: 38px;
+}
+
+.saveButton {
+  height: 38px;
+  padding: 0 18px;
+  font-weight: 600;
+}
+
+
+
+/* ======================================================
+   LEFT ACTION BAR
+====================================================== */
+
+.builder-left {
+  width: 260px;
+  background: #0c1326;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-y: auto;           /* ✅ Sidebar scroll */
+  min-height: 0;              /* 🔥 FIX */
+}
+
+/* panel */
+.builder-actions-panel {
+  padding: 12px;
+}
+
+.builder-action-category {
+  margin-bottom: 18px;
+}
+
+.builder-category-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.builder-action-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #e5e7eb;
+  transition: background 0.12s ease;
+}
+
+.builder-action-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ======================================================
+   CENTER CANVAS
+====================================================== */
+
+.builder-center {
+  flex: 1;
+  background: #0b1020;
+  overflow-y: auto;           /* ✅ Canvas scroll */
+  min-height: 0;              /* 🔥 FIX */
+}
+
+.builder-canvas {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.builder-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #f3f4f6;
+}
+
+.builder-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ======================================================
+   STEP CARD
+====================================================== */
+
+.builder-step-card {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.builder-step-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: #111b33;
+}
+
+.builder-step-card.active {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4);
+}
+
+.builder-step-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.builder-step-meta {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* ======================================================
+   RIGHT INSPECTOR
+====================================================== */
+
+.builder-right {
+  width: 320px;
+  background: #0c1326;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-y: auto;           /* ✅ Inspector scroll */
+  min-height: 0;              /* 🔥 FIX */
+}
+
+.builder-inspector {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.builder-inspector-empty {
+  padding: 24px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* ======================================================
+   PARAMETERS
+====================================================== */
+
+.builder-params {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ======================================================
+   HOOKS
+====================================================== */
+
+.builder-hooks {
+  margin-top: 6px;
+}
+
+.builder-hooks-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #f9fafb;
+}
+
+/* ======================================================
+   FORM OVERRIDES
+====================================================== */
+
+.formInput,
+.formSelect,
+.formTextarea {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+/* ======================================================
+   SCROLLBARS
+====================================================== */
+
+.builder-left::-webkit-scrollbar,
+.builder-center::-webkit-scrollbar,
+.builder-right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.builder-left::-webkit-scrollbar-thumb,
+.builder-center::-webkit-scrollbar-thumb,
+.builder-right::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.builder-step-card {
+  position: relative;
+}
+
+.builder-step-delete {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.builder-step-card:hover .builder-step-delete {
+  opacity: 1;
+}
+
+.builder-step-delete:hover {
+  color: #ef4444;
+}
+
+.builder-left-help {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: #9ca3af;
+}
+.builder-left-help p {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.builder-left-help kbd {
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  margin: 0 2px;
+}
+.builder-left-helper-top {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0c1326;
+
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+.builder-left-helper-top p {
+  margin: 4px 0;
+}
+
+.builder-left-helper-top kbd {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
+
+.quickadd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 25, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 120px;
+}
+
+.quickadd-modal {
+  width: 420px;
+  background: #0b1020;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.quickadd-list {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.quickadd-item {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.quickadd-item:hover {
+  background: rgba(99,102,241,0.15);
+}
+
+.quickadd-empty {
+  padding: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.builder-center-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e5e7eb;
+
+  padding: 18px 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}

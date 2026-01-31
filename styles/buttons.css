@@ -1,0 +1,34 @@
+/* Primary CTA button */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #6d6cff, #8b7cff);
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  border: none;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+  transform: translateY(0);
+}
+
+/* Optional danger variant (future use) */
+.btnDanger {
+  background: linear-gradient(135deg, #ff6b6b, #ff8787);
+}

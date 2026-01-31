@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  padding: 20px;
+  color: #E5E7EB; /* ← ADD THIS */
+}
+
+.label {
+  font-size: 13px;
+  color: #9CA3AF;
+}
+
+.value {
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #F9FAFB; /* ← ADD THIS */
+}

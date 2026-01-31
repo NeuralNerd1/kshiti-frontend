@@ -1,0 +1,235 @@
+/* ===============================
+   GRID
+=============================== */
+
+.elements-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+
+  grid-auto-rows: 96px;
+}
+
+.elements-grid > * {
+  min-width: 0;
+}
+
+/* ===============================
+   EMPTY
+=============================== */
+
+.elements-empty {
+  margin-top: 60px;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* ===============================
+   CARD
+=============================== */
+
+.element-card {
+  position: relative;
+  background: #11172b;
+
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 14px;
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.element-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.element-card.menu-open {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4);
+}
+
+/* ===============================
+   HEADER
+=============================== */
+
+.element-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.element-title-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.element-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.element-url {
+  font-size: 11px;
+  color: #94a3b8;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===============================
+   FOOTER
+=============================== */
+
+.element-card-footer {
+  margin-top: auto;
+}
+
+.element-locator-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+}
+
+/* ===============================
+   KEBAB
+=============================== */
+
+.element-kebab {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.element-card:hover .element-kebab,
+.element-card.menu-open .element-kebab {
+  opacity: 1;
+}
+
+.element-kebab:hover {
+  color: #e5e7eb;
+}
+
+/* ===============================
+   ACTION MENU
+=============================== */
+
+.element-actions-menu {
+  position: absolute;
+  top: 36px;
+  right: 8px;
+
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+
+  min-width: 140px;
+  padding: 6px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  z-index: 50;
+}
+
+.element-actions-menu button {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.element-actions-menu button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.element-actions-menu button.danger {
+  color: #f87171;
+}
+
+.element-actions-menu button.danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+}
+
+/* ===============================
+   CAPTURE BROWSER
+=============================== */
+
+.capture-browser-root {
+  position: fixed;
+  inset: 0;
+  background: #0b1020;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.capture-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: white;
+}
+
+/* ===============================
+   HELP OVERLAY
+=============================== */
+
+.capture-help-overlay {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  z-index: 1100;
+}
+
+.capture-help-box {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 14px 16px;
+  width: 260px;
+
+  font-size: 12px;
+  color: #e5e7eb;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.capture-help-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.capture-help-box ul {
+  padding-left: 16px;
+  margin: 0;
+}
+
+.capture-help-box li {
+  margin: 4px 0;
+  color: #cbd5f5;
+}

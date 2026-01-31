@@ -1,0 +1,408 @@
+/* ===============================
+   TEST CASES PAGE LAYOUT
+=============================== */
+
+/* Root layout */
+.testcases-root {
+  display: flex;
+  height: calc(100vh - 64px); /* header height */
+  width: 100%;
+  background: #0b1020;
+}
+
+/* LEFT SIDEBAR */
+.testcases-sidebar {
+  width: 260px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    #0e152b 0%,
+    #0b1020 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-y: auto;
+}
+
+/* RIGHT CONTENT */
+.testcases-content {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+}
+
+/* ===============================
+   SHARED FLOWS UI (REUSED)
+   ⚠️ DO NOT MODIFY
+=============================== */
+
+/* Empty state */
+.flows-empty {
+  margin-top: 60px;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* ───────── GRID ───────── */
+
+.flows-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+
+  /* 🔥 FORCE CONSISTENT HEIGHT */
+  grid-auto-rows: 96px;
+}
+
+.flows-grid > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ───────── CARD ───────── */
+
+.flow-card {
+  position: relative; /* 🔥 REQUIRED */
+  background: #11172b;
+
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 14px;
+  width: 100%;
+  max-width: 100%;
+
+  height: 100%; /* 🔥 fill grid row */
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+  transition: border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.flow-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.flow-card.menu-open {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px
+    rgba(99, 102, 241, 0.4);
+}
+
+/* ───── Card Header ───── */
+
+.flow-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  overflow: hidden;
+}
+
+/* Title */
+.flow-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ───── Kebab ───── */
+
+.flow-kebab {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease,
+    color 0.15s ease;
+}
+
+/* Show kebab on hover or menu open */
+.flow-card:hover .flow-kebab,
+.flow-card.menu-open .flow-kebab {
+  opacity: 1;
+}
+
+.flow-kebab:hover {
+  color: #e5e7eb;
+}
+
+/* ───── Actions Menu ───── */
+
+.flow-actions-wrapper {
+  flex-shrink: 0;
+  width: 28px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flow-actions-menu {
+  position: absolute;
+  top: 36px;
+  right: 8px;
+
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+
+  min-width: 160px;
+  padding: 6px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px
+      rgba(255, 255, 255, 0.02);
+
+  z-index: 50;
+}
+
+.flow-actions-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 10px;
+
+  width: 10px;
+  height: 10px;
+
+  background: #020617;
+  border-left: 1px solid #1e293b;
+  border-top: 1px solid #1e293b;
+
+  transform: rotate(45deg);
+}
+
+.flow-actions-menu button {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.flow-actions-menu button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.flow-actions-menu button.danger {
+  color: #f87171;
+}
+
+.flow-actions-menu button.danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+}
+
+/* ───── Footer ───── */
+
+.flow-card-footer {
+  margin-top: auto;
+}
+
+/* ───── Status Chip ───── */
+
+.flow-status-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.flow-status-chip.draft {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.flow-status-chip.active {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+.flow-status-chip.archived {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+}
+
+/* ───── Folder Explorer ───── */
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.folder-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.folder-item.active {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.folder-caret {
+  width: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.folder-caret.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+/* ===============================
+   HEADER LAYOUT FIX
+=============================== */
+
+.flows-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.flows-toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flows-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===============================
+   MODAL (TEST CASE)
+=============================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  background: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.modal-textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #cbd5f5;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #6366f1;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Test case description (same as flows) */
+.flow-description {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* ===============================
+   CREATE TEST CASE BUTTON
+=============================== */
+
+.create-flow-btn {
+  background: transparent;
+  border: 1px solid rgba(124, 92, 255, 0.6);
+  color: #7c5cff;
+
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-flow-btn:hover {
+  background: rgba(124, 92, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.flow-actions-menu {
+  position: absolute;
+  top: 36px;
+  right: 8px;
+}

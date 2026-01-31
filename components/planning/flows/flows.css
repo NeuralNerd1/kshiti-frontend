@@ -1,0 +1,71 @@
+.flow-row {
+  background: linear-gradient(180deg, #0f172a, #020617);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.flow-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.flow-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flow-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.flow-desc {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.flow-kebab {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.flow-kebab:hover {
+  color: #ffffff;
+}
+
+/* ACTION MENU */
+.flow-actions-menu {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  min-width: 160px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  padding: 6px;
+}
+
+.flow-actions-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.flow-actions-menu button:hover {
+  background: #111827;
+}
+
+.flow-actions-menu .danger {
+  color: #ef4444;
+}

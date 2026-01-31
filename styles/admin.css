@@ -1,0 +1,11 @@
+.permission-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.permission-readonly {
+  color: #9ca3af;
+  font-size: 12px;
+}
