@@ -33,30 +33,50 @@ export default function SearchDropdown({
     : [];
 
   return (
-    <div style={{ display: "grid", gap: "12px" }}>
+    <div style={{ position: "relative", width: "100%" }}>
+      {/* Input */}
       <input
         value={query}
         placeholder={placeholder}
         onChange={(e) => setQuery(e.target.value)}
         style={{
-          padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid #e5e7eb",
-          fontSize: "14px",
-        }}
+  width: "100%",
+  padding: "12px",
+  borderRadius: "12px",
+  border: "1px solid #D1D5DB",
+  background: "#FFFFFF",
+  color: "#111827",        // dark text for visibility
+  fontSize: "14px",
+  outline: "none",
+}}
       />
 
+      {/* Dropdown */}
       {showResults && (
         <div
           style={{
-            border: "1px solid #e5e7eb",
-            borderRadius: "8px",
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            width: "100%",
+            marginTop: "8px",
+            background: "#1F2937", // matches .pageCard
+            border: "1px solid #374151",
+            borderRadius: "12px",
             maxHeight: "240px",
             overflowY: "auto",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+            zIndex: 50,
           }}
         >
           {filtered.length === 0 ? (
-            <div style={{ padding: "12px", color: "#6b7280" }}>
+            <div
+              style={{
+                padding: "12px",
+                color: "#9CA3AF",
+                fontSize: "14px",
+              }}
+            >
               {emptyText}
             </div>
           ) : (
@@ -67,8 +87,15 @@ export default function SearchDropdown({
                 style={{
                   padding: "12px",
                   cursor: "pointer",
-                  borderBottom: "1px solid #f3f4f6",
+                  transition: "background 0.15s ease",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background =
+                    "rgba(255,255,255,0.06)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
               >
                 {item.label}
               </div>
