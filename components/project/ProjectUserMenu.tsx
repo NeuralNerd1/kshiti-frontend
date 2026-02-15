@@ -2,10 +2,35 @@
 
 import { useSession } from "@/hooks/useSession";
 import { useState } from "react";
+import { useProject } from "@/hooks/projects/useProject";
+import { useRouter, useParams } from "next/navigation";
+
+
 
 export default function ProjectUserMenu() {
   const { user } = useSession();
   const [open, setOpen] = useState(false);
+  const { project } = useProject();
+
+  const permissions = project?.permissions || {};
+const planningEnabled = project?.test_planning_enabled === true;
+const router = useRouter();
+const params = useParams();
+
+const company = params.company;
+const projectId = params.project;
+
+
+const hasTemplatePermission =
+  permissions.can_create_templates ||
+  permissions.can_submit_templates ||
+  permissions.can_edit_templates ||
+  permissions.can_create_planning_items ||
+  permissions.can_approve_templates;
+
+const showTestConsole =
+  planningEnabled && hasTemplatePermission;
+
 
   if (!user) return null;
 
@@ -55,21 +80,49 @@ export default function ProjectUserMenu() {
             padding: 8,
           }}
         >
-          {["Profile", "Project Console", "Test Console"].map(
-            (item) => (
-              <div
-                key={item}
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  fontSize: 14,
-                  cursor: "pointer",
-                }}
-              >
-                {item}
-              </div>
-            )
-          )}
+          <>
+  <div
+    style={{
+      padding: "10px 12px",
+      borderRadius: 10,
+      fontSize: 14,
+      cursor: "pointer",
+    }}
+  >
+    Profile
+  </div>
+
+  <div
+    style={{
+      padding: "10px 12px",
+      borderRadius: 10,
+      fontSize: 14,
+      cursor: "pointer",
+    }}
+  >
+    Project Console
+  </div>
+
+  {showTestConsole && (
+  <div
+    style={{
+      padding: "10px 12px",
+      borderRadius: 10,
+      fontSize: 14,
+      cursor: "pointer",
+    }}
+    onClick={() => {
+      router.push(
+        `/company/${company}/projects/${projectId}/test-console`
+      );
+      setOpen(false);
+    }}
+  >
+    Test Console
+  </div>
+)}
+</>
+
 
           
         </div>

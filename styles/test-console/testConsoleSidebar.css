@@ -1,0 +1,68 @@
+/* ===================================
+   TEST CONSOLE SIDEBAR
+=================================== */
+
+.test-console-sidebar {
+  width: 260px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    #0e152b 0%,
+    #0b1020 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+  width: 100%;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-item.active {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.sidebar-icon {
+  font-size: 16px;
+}
+
+.sidebar-label {
+  font-size: 13px;
+  color: #e5e7eb;
+  font-weight: 500;
+}

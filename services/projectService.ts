@@ -57,6 +57,8 @@ export function getProject(projectId: number | string) {
     builder_enabled: boolean;
     execution_enabled: boolean;
     reports_enabled: boolean;
+    test_planning_enabled: boolean;
+permissions?: Record<string, boolean>;
 
     status: string;
   }>(`/company/projects/${projectId}/`);
