@@ -10,6 +10,8 @@ type Props = {
   action: ActionDefinition | null;
   onUpdate?: (params: Record<string, any>) => void;
   readOnly?: boolean;
+  /** Pass through to show variable/element picker in string params */
+  projectId?: number;
 };
 
 export default function StepInspector({
@@ -17,6 +19,7 @@ export default function StepInspector({
   action,
   onUpdate,
   readOnly = false,
+  projectId,
 }: Props) {
   if (!step) {
     return (
@@ -35,6 +38,7 @@ export default function StepInspector({
         parameters={step.parameters}
         schema={schema}
         readOnly={readOnly}
+        projectId={projectId}
         onChange={(params) => {
           if (readOnly) return;
           onUpdate?.(params);

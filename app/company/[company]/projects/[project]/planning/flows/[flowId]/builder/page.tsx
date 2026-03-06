@@ -111,11 +111,11 @@ export default function FlowBuilderPage() {
 
       for (const category of registry) {
         const action =
-  category.actions.find(
-    (a: RegistryAction) =>
-      a.action_key ===
-      selectedStep.action_key
-  );
+          category.actions.find(
+            (a: RegistryAction) =>
+              a.action_key ===
+              selectedStep.action_key
+          );
         if (action) return action;
       }
 
@@ -254,6 +254,7 @@ export default function FlowBuilderPage() {
           <StepInspector
             step={selectedStep}
             action={selectedAction}
+            projectId={Number(projectId)}
             onUpdate={(patch) => {
               if (!selectedStep) return;
 

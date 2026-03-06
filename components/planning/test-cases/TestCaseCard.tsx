@@ -9,6 +9,7 @@ type TestCaseCardProps = {
     name: string;
     description?: string;
     status: "SAVED" | "ARCHIVED";
+    tags?: string[];
   };
   onOpen: () => void;
   onEdit: () => void;
@@ -107,14 +108,29 @@ export default function TestCaseCard({
       {/* ================= FOOTER ================= */}
       <div className="flow-card-footer">
         <span
-          className={`flow-status-chip ${
-            testCase.status === "ARCHIVED"
-              ? "archived"
-              : "active"
-          }`}
+          className={`flow-status-chip ${testCase.status === "ARCHIVED"
+            ? "archived"
+            : "active"
+            }`}
         >
           {testCase.status}
         </span>
+
+        {/* Tags */}
+        {testCase.tags && testCase.tags.length > 0 && (
+          <div className="tc-tags-row">
+            {testCase.tags.slice(0, 4).map((tag) => (
+              <span key={tag} className="tc-tag-chip">
+                {tag}
+              </span>
+            ))}
+            {testCase.tags.length > 4 && (
+              <span className="tc-tag-chip tc-tag-more">
+                +{testCase.tags.length - 4}
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

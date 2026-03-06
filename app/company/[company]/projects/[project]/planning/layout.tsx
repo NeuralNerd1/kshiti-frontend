@@ -15,10 +15,10 @@ export default function PlanningLayout({
   if (error || !project) {
     return (
       <ErrorState
-  message={
-    error ?? "Unable to load project. Project context not available."
-  }
-/>
+        message={
+          error ?? "Unable to load project. Project context not available."
+        }
+      />
     );
   }
 

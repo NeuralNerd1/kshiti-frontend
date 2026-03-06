@@ -25,15 +25,17 @@ export type LoginResponse = {
 
 export type SessionResponse =
   | {
-      authenticated: true;
-      user_id: number;
-      email: string;
-      company_id: number;
-      company_slug: string;
-    }
+    authenticated: true;
+    user_id: number;
+    email: string;
+    company_id: number;
+    company_slug: string;
+    display_name: string;
+    avatar_url: string | null;
+  }
   | {
-      authenticated: false;
-    };
+    authenticated: false;
+  };
 
 export async function login(payload: LoginPayload): Promise<LoginResponse> {
   return apiRequest<LoginResponse>(`${BASE_AUTH_URL}/login/`, {

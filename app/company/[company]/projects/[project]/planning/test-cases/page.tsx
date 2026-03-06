@@ -29,6 +29,7 @@ import "./testCasesPage.css";
 --------------------------------- */
 const testCaseStatusOptions = [
   { label: "All", value: "ALL" },
+  { label: "Draft", value: "DRAFT" },
   { label: "Saved", value: "SAVED" },
   { label: "Archived", value: "ARCHIVED" },
 ];
@@ -186,8 +187,11 @@ export default function TestCasesPage() {
                 onArchive={async () => {
                   try {
                     await archiveTestCase(tc.id);
+                    // Update local state instead of filtering out
                     setTestCases((prev) =>
-                      prev.filter((x) => x.id !== tc.id)
+                      prev.map((x) =>
+                        x.id === tc.id ? { ...x, status: "ARCHIVED" } : x
+                      )
                     );
                     toast.success(
                       "Test case archived"

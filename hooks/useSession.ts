@@ -5,32 +5,34 @@ import { getSession } from "@/services/authService";
 
 type SessionState =
   | {
-      loading: true;
-      authenticated: false;
-      user?: undefined;
-      company?: undefined;
-      error?: undefined;
-    }
+    loading: true;
+    authenticated: false;
+    user?: undefined;
+    company?: undefined;
+    error?: undefined;
+  }
   | {
-      loading: false;
-      authenticated: true;
-      user: {
-        id: number;
-        email: string;
-      };
-      company: {
-        id: number;
-        slug: string;
-      };
-      error?: undefined;
-    }
-  | {
-      loading: false;
-      authenticated: false;
-      user?: undefined;
-      company?: undefined;
-      error?: string;
+    loading: false;
+    authenticated: true;
+    user: {
+      id: number;
+      email: string;
+      display_name: string;
+      avatar_url: string | null;
     };
+    company: {
+      id: number;
+      slug: string;
+    };
+    error?: undefined;
+  }
+  | {
+    loading: false;
+    authenticated: false;
+    user?: undefined;
+    company?: undefined;
+    error?: string;
+  };
 
 export function useSession(): SessionState {
   const [state, setState] = useState<SessionState>({
@@ -41,13 +43,13 @@ export function useSession(): SessionState {
   useEffect(() => {
     let active = true;
     const token = localStorage.getItem("access_token");
-  if (!token) {
-    setState({
-      loading: false,
-      authenticated: false,
-    });
-    return;
-  }
+    if (!token) {
+      setState({
+        loading: false,
+        authenticated: false,
+      });
+      return;
+    }
 
     async function fetchSession() {
       try {
@@ -62,6 +64,8 @@ export function useSession(): SessionState {
             user: {
               id: res.user_id,
               email: res.email,
+              display_name: res.display_name ?? res.email,
+              avatar_url: res.avatar_url ?? null,
             },
             company: {
               id: res.company_id,

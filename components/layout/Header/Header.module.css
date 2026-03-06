@@ -48,6 +48,15 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* When avatar is an image, remove the indigo background */
+img.avatar {
+  background: transparent;
+  object-fit: cover;
+  display: block;
 }
 
 .dropdown {
@@ -98,4 +107,3 @@
 .homeButton:hover {
   color: #ffffff;
 }
-

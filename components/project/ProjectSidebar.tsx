@@ -54,14 +54,14 @@ export default function ProjectSidebar({
           <Item label="Global Files" path="planning/files" />
         </SidebarSection>
 
-        <SidebarSection title="Process & Reports">
+        <SidebarSection title="Process & Planning">
           <Item label="Configure Test Process" path="process/configure" />
-          <Item label="Reports" path="reports" />
           <Item label="Bugs" path="bugs" />
         </SidebarSection>
 
         <SidebarSection title="Test Execution">
-          <Item label="Test Suite" path="execution/suite" />
+          <Item label="Test Suite" path="execution/test-suite" />
+          <Item label="Local Test Cases" path="execution/local-test-cases" />
           <Item label="Execution Engine" path="execution/engine" />
           <Item label="Local Files" path="execution/files" />
         </SidebarSection>
@@ -74,7 +74,14 @@ export default function ProjectSidebar({
 
     return (
       <button
-        onClick={() => router.push(path)}
+        onClick={() => {
+          if (path === "execution/engine") {
+            const token = localStorage.getItem("access_token");
+            window.open(`http://localhost:3000/?token=${token}`, "_blank");
+          } else {
+            router.push(path);
+          }
+        }}
         style={{
           height: 44,
           borderRadius: 12,

@@ -155,10 +155,10 @@ export default function TestCaseBuilderPage() {
       for (const category of registry) {
         const action =
           category.actions.find(
-  (a: RegistryAction) =>
-    a.action_key ===
-    selectedStep.action_key
-);
+            (a: RegistryAction) =>
+              a.action_key ===
+              selectedStep.action_key
+          );
         if (action) return action;
       }
 
@@ -178,8 +178,8 @@ export default function TestCaseBuilderPage() {
             ? "Pre Conditions"
             : activeSection ===
               "expected_outcomes"
-            ? "Expected Outcomes"
-            : "Steps",
+              ? "Expected Outcomes"
+              : "Steps",
         steps,
       },
     ],
@@ -290,7 +290,7 @@ export default function TestCaseBuilderPage() {
             }
             dirty={
               builder.dirtySections[
-                activeSection
+              activeSection
               ]
             }
             onSave={handleSave}
@@ -348,6 +348,7 @@ export default function TestCaseBuilderPage() {
           <StepInspector
             step={selectedStep}
             action={selectedAction}
+            projectId={Number(projectId)}
             onUpdate={(patch) => {
               if (!selectedStep) return;
 
@@ -423,56 +424,56 @@ export default function TestCaseBuilderPage() {
 
       {importOpen && importSection && (
         <ImportFlowModal
-  open={importOpen}
-  projectId={Number(projectId)}
-  testCaseId={testCaseId}
-  section={importSection}
-  onClose={() => {
-    setImportOpen(false);
-    setImportSection(null);
-  }}
+          open={importOpen}
+          projectId={Number(projectId)}
+          testCaseId={testCaseId}
+          section={importSection}
+          onClose={() => {
+            setImportOpen(false);
+            setImportSection(null);
+          }}
 
-  onImport={async (flowId) => {
-  if (!importSection) return;
+          onImport={async (flowId) => {
+            if (!importSection) return;
 
-  try {
-    await importFlowToTestCase(
-      testCaseId,
-      flowId,
-      importSection
-    );
+            try {
+              await importFlowToTestCase(
+                testCaseId,
+                flowId,
+                importSection
+              );
 
-    toast.success("Flow imported, Please refresh the Page!");
+              toast.success("Flow imported, Please refresh the Page!");
 
-    // close modal immediately
-    setImportOpen(false);
-    setImportSection(null);
+              // close modal immediately
+              setImportOpen(false);
+              setImportSection(null);
 
-    // ⏱ reload after 2 seconds
-    setTimeout(() => {
-  router.refresh();
-}, 2000);
+              // ⏱ reload after 2 seconds
+              setTimeout(() => {
+                router.refresh();
+              }, 2000);
 
-  } catch (err) {
-    console.error("Import flow error:", err);
-    toast.error("Failed to import flow");
-  }
-}}
+            } catch (err) {
+              console.error("Import flow error:", err);
+              toast.error("Failed to import flow");
+            }
+          }}
 
 
 
-  onEditImport={(flowId) => {
-    router.push(
-      `/company/${company}/projects/${projectId}/planning/test-cases/${testCaseId}/edit-import/${flowId}`
-    );
-  }}
+          onEditImport={(flowId) => {
+            router.push(
+              `/company/${company}/projects/${projectId}/planning/test-cases/${testCaseId}/edit-import/${flowId}`
+            );
+          }}
 
-  onView={(flowId) => {
-  router.push(
-    `/company/${company}/projects/${projectId}/planning/test-cases/${testCaseId}/view/${flowId}?section=${importSection}`
-  );
-}}
-/>
+          onView={(flowId) => {
+            router.push(
+              `/company/${company}/projects/${projectId}/planning/test-cases/${testCaseId}/view/${flowId}?section=${importSection}`
+            );
+          }}
+        />
 
       )}
     </>

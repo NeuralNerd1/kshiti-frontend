@@ -1,33 +1,47 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { kanbanService, KanbanBoardConfig } from "@/services/test-plan/kanbanService";
 import { toast } from "@/components/common/toast/toast";
 import "@/styles/test-console/kanbanConfig.css";
 
 interface KanbanConfigBoardProps {
     projectId: number;
-    viewKey?: string; // Phase 3: Support individual view keys
+    viewKey?: string;
 }
 
 const SAMPLE_CARDS = [
-    { id: "TP-101", title: "Implement Real-time Synchronization", status: "TO DO", priority: "High", owner: "AL", color: "#f87171", section: "Sprint 1" },
-    { id: "TP-102", title: "Refactor Authentication Middleware", status: "IN PROGRESS", priority: "Critical", owner: "BK", color: "#c084fc", section: "Sprint 1" },
-    { id: "TP-103", title: "API Documentation Polish", status: "REVIEW", priority: "Medium", owner: "AL", color: "#60a5fa", section: "Epic: Auth" },
-    { id: "TP-104", title: "Fix Mobile Navigation Glitch", status: "DONE", priority: "Low", owner: "SY", color: "#4ade80", section: "Sprint 2" },
-    { id: "TP-105", title: "Database Migration Scripts", status: "TO DO", priority: "High", owner: "BK", color: "#f87171", section: "Epic: Infra" },
-    { id: "TP-106", title: "Unit Tests for Payment Flow", status: "IN PROGRESS", priority: "Medium", owner: "SY", color: "#60a5fa", section: "Epic: Auth" },
-    { id: "TP-107", title: "Optimize Image Processing Engine", status: "TO DO", priority: "Critical", owner: "AL", color: "#c084fc", section: "Sprint 1" },
-    { id: "TP-108", title: "Cleanup Legacy CSS Modules", status: "REVIEW", priority: "Low", owner: "BK", color: "#4ade80", section: "Sprint 2" },
-    { id: "TP-109", title: "Verify Webhook Notifications", status: "IN PROGRESS", priority: "High", owner: "SY", color: "#f87171", section: "Epic: Infra" },
+    { id: "TP-101", title: "Implement Real-time Synchronization", status: "TO DO", priority: "High", owner: "AL", color: "#818CF8", section: "Sprint 1" },
+    { id: "TP-102", title: "Refactor Authentication Middleware", status: "IN PROGRESS", priority: "Critical", owner: "BK", color: "#C084FC", section: "Sprint 1" },
+    { id: "TP-103", title: "API Documentation Polish", status: "REVIEW", priority: "Medium", owner: "AL", color: "#60A5FA", section: "Epic: Auth" },
+    { id: "TP-104", title: "Fix Mobile Navigation Glitch", status: "DONE", priority: "Low", owner: "SY", color: "#34D399", section: "Sprint 2" },
+    { id: "TP-105", title: "Database Migration Scripts", status: "TO DO", priority: "High", owner: "BK", color: "#818CF8", section: "Epic: Infra" },
+    { id: "TP-106", title: "Unit Tests for Payment Flow", status: "IN PROGRESS", priority: "Medium", owner: "SY", color: "#60A5FA", section: "Epic: Auth" },
+    { id: "TP-107", title: "Optimize Image Processing Engine", status: "TO DO", priority: "Critical", owner: "AL", color: "#C084FC", section: "Sprint 1" },
+    { id: "TP-108", title: "Cleanup Legacy CSS Modules", status: "REVIEW", priority: "Low", owner: "BK", color: "#34D399", section: "Sprint 2" },
+    { id: "TP-109", title: "Verify Webhook Notifications", status: "IN PROGRESS", priority: "High", owner: "SY", color: "#818CF8", section: "Epic: Infra" },
 ];
 
 const COLUMNS = ["TO DO", "IN PROGRESS", "REVIEW", "DONE"];
 
+const COLUMN_ACCENT: Record<string, string> = {
+    "TO DO": "#475569",
+    "IN PROGRESS": "#818CF8",
+    "REVIEW": "#F59E0B",
+    "DONE": "#34D399",
+};
+
+const GROUPING_OPTIONS = [
+    { id: "NONE", label: "Flat List" },
+    { id: "OWNER", label: "Assignee" },
+    { id: "PRIORITY", label: "Priority" },
+    { id: "SECTION", label: "Section" },
+];
+
 export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: KanbanConfigBoardProps) {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(true); // Phase 3: Toggleable sidebar
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [cards, setCards] = useState(SAMPLE_CARDS);
 
     const [config, setConfig] = useState<KanbanBoardConfig>({
@@ -61,27 +75,23 @@ export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: Kan
 
     // --- SWIMLANE LOGIC ---
     const swimlanes = useMemo(() => {
-        if (config.swimlane_attribute === "NONE") return [{ id: "ALL", label: "Project Board" }];
-
+        if (config.swimlane_attribute === "NONE") return [{ id: "ALL", label: "" }];
         if (config.swimlane_attribute === "OWNER") {
             const owners = Array.from(new Set(cards.map(c => c.owner)));
             return owners.map(o => ({ id: o, label: `Assignee: ${o}` }));
         }
-
         if (config.swimlane_attribute === "PRIORITY") {
             return [
-                { id: "Critical", label: "🔴 Critical Priority" },
-                { id: "High", label: "🟠 High Priority" },
-                { id: "Medium", label: "🔵 Medium Priority" },
-                { id: "Low", label: "⚪ Low Priority" },
+                { id: "Critical", label: "Critical" },
+                { id: "High", label: "High" },
+                { id: "Medium", label: "Medium" },
+                { id: "Low", label: "Low" },
             ];
         }
-
         if (config.swimlane_attribute === "SECTION") {
             const sections = Array.from(new Set(cards.map(c => c.section)));
             return sections.map(s => ({ id: s, label: s }));
         }
-
         return [];
     }, [config.swimlane_attribute, cards]);
 
@@ -108,15 +118,15 @@ export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: Kan
         setSaving(true);
         try {
             await kanbanService.updateConfig(projectId, { ...config, view_key: viewKey });
-            toast.success(`Kanban Setup saved for ${viewKey === "GLOBAL" ? "Project" : "View"}!`);
+            toast.success(`Kanban config saved for ${viewKey === "GLOBAL" ? "project" : "view"}.`);
         } catch (e: any) {
-            toast.error(e?.message || "Failed to persist configuration");
+            toast.error(e?.message || "Failed to save configuration");
         } finally {
             setSaving(false);
         }
     };
 
-    if (loading) return <div className="loading-state">Initialising Kanban Setup...</div>;
+    if (loading) return <div className="kanban-loading-state">Loading Kanban Setup…</div>;
 
     const rootClasses = [
         "kanban-config-root",
@@ -124,145 +134,162 @@ export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: Kan
         `layout-${config.layout_type.toLowerCase().replace("_", "-")}`,
         `density-${config.card_density.toLowerCase()}`,
         config.enable_glass ? "glass-effect" : "",
-        sidebarOpen ? "sidebar-visible" : "sidebar-hidden"
-    ].join(" ");
+        sidebarOpen ? "sidebar-visible" : "sidebar-hidden",
+    ].filter(Boolean).join(" ");
 
     return (
         <div className={rootClasses}>
-            {/* 🚀 WORKSPACE AREA */}
+            {/* BOARD WORKSPACE */}
             <div className="kanban-board-workspace">
-                {/* PHASE 3: SIDEBAR TOGGLE BUTTON */}
-                <button
-                    className="kanban-sidebar-toggle"
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    title={sidebarOpen ? "Hide Settings" : "Show Settings"}
-                >
-                    {sidebarOpen ? "→" : "⚙️"}
-                </button>
 
-                <div
-                    className="kanban-board-preview"
-                    style={{ transform: `scale(${config.zoom_level / 100})` }}
-                >
-                    <div className="kanban-swimlane-container">
-                        {swimlanes.map(lane => (
-                            <div key={lane.id} className="kanban-swimlane">
-                                {config.swimlane_attribute !== "NONE" && (
-                                    <div className="kanban-swimlane-header">
-                                        <span className="kanban-swimlane-title">{lane.label}</span>
-                                        <div className="kanban-swimlane-line" />
-                                    </div>
-                                )}
+                {/* Sidebar toggle — inside workspace, top-left */}
+                <div className="kanban-toolbar">
+                    <button
+                        className="kanban-sidebar-toggle"
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                        title={sidebarOpen ? "Hide Settings" : "Show Settings"}
+                    >
+                        {sidebarOpen ? "Hide Settings" : "Settings"}
+                    </button>
+                    <span className="kanban-view-label">
+                        Viewing: <strong>{viewKey}</strong>
+                    </span>
+                </div>
 
-                                <div style={{ display: "flex", gap: "20px" }}>
-                                    {COLUMNS.map(col => {
-                                        const columnCards = cards.filter(c => {
-                                            const matchesStatus = c.status === col;
-                                            if (config.swimlane_attribute === "NONE") return matchesStatus;
-                                            if (config.swimlane_attribute === "OWNER") return matchesStatus && c.owner === lane.id;
-                                            if (config.swimlane_attribute === "PRIORITY") return matchesStatus && c.priority === lane.id;
-                                            if (config.swimlane_attribute === "SECTION") return matchesStatus && c.section === lane.id;
-                                            return false;
-                                        });
+                {/* Board scroll wrapper */}
+                <div className="kanban-board-scroll">
+                    <div
+                        className="kanban-board-preview"
+                        style={{ zoom: config.zoom_level / 100 }}
+                    >
+                        <div className="kanban-swimlane-container">
+                            {swimlanes.map(lane => (
+                                <div key={lane.id} className="kanban-swimlane">
+                                    {config.swimlane_attribute !== "NONE" && (
+                                        <div className="kanban-swimlane-header">
+                                            <span className="kanban-swimlane-title">{lane.label}</span>
+                                            <div className="kanban-swimlane-line" />
+                                        </div>
+                                    )}
 
-                                        return (
-                                            <div
-                                                key={`${lane.id}-${col}`}
-                                                className="kanban-column"
-                                                onDragOver={handleDragOver}
-                                                onDrop={(e) => handleDrop(e, col, lane.id)}
-                                            >
-                                                <div className="kanban-column-header">
-                                                    <span className="kanban-column-title">{col}</span>
-                                                    <span className="kanban-column-count">{columnCards.length}</span>
-                                                </div>
-                                                <div className="kanban-cards-list">
-                                                    {columnCards.map(card => (
+                                    <div className="kanban-columns-row">
+                                        {COLUMNS.map(col => {
+                                            const columnCards = cards.filter(c => {
+                                                const matchesStatus = c.status === col;
+                                                if (config.swimlane_attribute === "NONE") return matchesStatus;
+                                                if (config.swimlane_attribute === "OWNER") return matchesStatus && c.owner === lane.id;
+                                                if (config.swimlane_attribute === "PRIORITY") return matchesStatus && c.priority === lane.id;
+                                                if (config.swimlane_attribute === "SECTION") return matchesStatus && c.section === lane.id;
+                                                return false;
+                                            });
+
+                                            return (
+                                                <div
+                                                    key={`${lane.id}-${col}`}
+                                                    className="kanban-column"
+                                                    onDragOver={handleDragOver}
+                                                    onDrop={(e) => handleDrop(e, col, lane.id)}
+                                                >
+                                                    <div className="kanban-column-header">
                                                         <div
-                                                            key={card.id}
-                                                            className="kanban-preview-card"
-                                                            draggable
-                                                            onDragStart={(e) => handleDragStart(e, card.id)}
-                                                            style={{
-                                                                borderLeft: `4px solid ${card.color}`,
-                                                                boxShadow: config.color_scheme === "MODERN" ? `0 4px 20px ${card.color}15` : ""
-                                                            }}
-                                                        >
-                                                            <span className="kanban-card-id">{card.id}</span>
-                                                            <div className="kanban-card-title">{card.title}</div>
-                                                            <div className="kanban-card-footer">
-                                                                {config.show_owner && (
-                                                                    <div className="kanban-card-owner">
-                                                                        <div className="kanban-owner-avatar" style={{ background: card.color }}>
-                                                                            {card.owner}
+                                                            className="kanban-column-indicator"
+                                                            style={{ background: COLUMN_ACCENT[col] }}
+                                                        />
+                                                        <span className="kanban-column-title">{col}</span>
+                                                        <span className="kanban-column-count">{columnCards.length}</span>
+                                                    </div>
+
+                                                    <div className="kanban-cards-list">
+                                                        {columnCards.map(card => (
+                                                            <div
+                                                                key={card.id}
+                                                                className="kanban-preview-card"
+                                                                draggable
+                                                                onDragStart={(e) => handleDragStart(e, card.id)}
+                                                                style={{ borderLeft: `3px solid ${card.color}` }}
+                                                            >
+                                                                <span className="kanban-card-id">{card.id}</span>
+                                                                <div className="kanban-card-title">{card.title}</div>
+                                                                <div className="kanban-card-footer">
+                                                                    {config.show_owner && (
+                                                                        <div className="kanban-card-owner">
+                                                                            <div
+                                                                                className="kanban-owner-avatar"
+                                                                                style={{ background: card.color }}
+                                                                            >
+                                                                                {card.owner}
+                                                                            </div>
+                                                                            <span className="kanban-card-date">24 Oct</span>
                                                                         </div>
-                                                                        <span style={{ fontSize: "11px", color: "#64748b" }}>24 Oct</span>
-                                                                    </div>
-                                                                )}
+                                                                    )}
+                                                                    <span
+                                                                        className="kanban-card-priority"
+                                                                        data-priority={card.priority.toLowerCase()}
+                                                                    >
+                                                                        {card.priority}
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    ))}
+                                                        ))}
+
+                                                        {columnCards.length === 0 && (
+                                                            <div className="kanban-empty-column">
+                                                                Drop here
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* ⚙️ KANBAN SETUP SIDEBAR */}
+            {/* SETTINGS SIDEBAR */}
             <aside className="design-studio-sidebar">
                 <div className="studio-header">
-                    <h2 className="studio-title">⚙️ Kanban Setup</h2>
-                    <span style={{ fontSize: "10px", color: "#64748b", textTransform: "uppercase", letterSpacing: "1px" }}>
-                        Viewing: {viewKey}
-                    </span>
+                    <h2 className="studio-title">Kanban Setup</h2>
                 </div>
 
                 <div className="studio-content">
-                    {/* SECTION: GROUPING (Phase 3: Visual Selection) */}
+                    {/* Group by */}
                     <div className="studio-section">
-                        <label className="studio-section-label">Group items by</label>
+                        <label className="studio-section-label">Group Items By</label>
                         <div className="visual-selector-grid">
-                            {[
-                                { id: "NONE", label: "Flat List", icon: "📄" },
-                                { id: "OWNER", label: "Assignee", icon: "👤" },
-                                { id: "PRIORITY", label: "Priority", icon: "⭐" },
-                                { id: "SECTION", label: "Section", icon: "📁" },
-                            ].map(opt => (
+                            {GROUPING_OPTIONS.map(opt => (
                                 <button
                                     key={opt.id}
                                     className={`visual-selector-btn ${config.swimlane_attribute === opt.id ? "active" : ""}`}
                                     onClick={() => setConfig({ ...config, swimlane_attribute: opt.id as any })}
                                 >
-                                    <span className="opt-icon">{opt.icon}</span>
                                     <span className="opt-label">{opt.label}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* SECTION: AESTHETICS */}
+                    {/* Aesthetics */}
                     <div className="studio-section">
-                        <label className="studio-section-label">Aesthetics & Effects</label>
+                        <label className="studio-section-label">Aesthetics</label>
                         <div className="studio-control-group">
-                            <div className="option-grid">
+                            <div className="option-grid option-grid--3">
                                 {["MODERN", "CLASSIC", "HIGH_CONTRAST"].map(theme => (
                                     <button
                                         key={theme}
                                         className={`studio-btn ${config.color_scheme === theme ? "active" : ""}`}
                                         onClick={() => setConfig({ ...config, color_scheme: theme as any })}
                                     >
-                                        {theme.replace("_", " ")}
+                                        {theme === "HIGH_CONTRAST" ? "High Contrast" : theme.charAt(0) + theme.slice(1).toLowerCase()}
                                     </button>
                                 ))}
                             </div>
 
                             <label className="studio-toggle">
-                                <span className="config-option-label" style={{ fontSize: "13px" }}>Glassmorphism Blur</span>
+                                <span className="config-option-label">Glassmorphism</span>
                                 <input
                                     type="checkbox"
                                     hidden
@@ -276,35 +303,58 @@ export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: Kan
                         </div>
                     </div>
 
-                    {/* SECTION: DENSITY & ZOOM */}
+                    {/* Density */}
                     <div className="studio-section">
-                        <label className="studio-section-label">Density & Zoom</label>
-                        <div className="studio-control-group">
-                            <div className="option-grid">
-                                {["COMPACT", "COMFORTABLE", "SPACIOUS"].map(d => (
-                                    <button
-                                        key={d}
-                                        className={`studio-btn ${config.card_density === d ? "active" : ""}`}
-                                        onClick={() => setConfig({ ...config, card_density: d as any })}
-                                    >
-                                        {d.charAt(0) + d.slice(1).toLowerCase()}
-                                    </button>
-                                ))}
-                            </div>
+                        <label className="studio-section-label">Card Density</label>
+                        <div className="option-grid option-grid--3">
+                            {["COMPACT", "COMFORTABLE", "SPACIOUS"].map(d => (
+                                <button
+                                    key={d}
+                                    className={`studio-btn ${config.card_density === d ? "active" : ""}`}
+                                    onClick={() => setConfig({ ...config, card_density: d as any })}
+                                >
+                                    {d.charAt(0) + d.slice(1).toLowerCase()}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
 
-                            <div className="zoom-control-container">
-                                <span style={{ fontSize: "16px" }}>🔍</span>
+                    {/* Zoom */}
+                    <div className="studio-section">
+                        <label className="studio-section-label">
+                            Zoom — {config.zoom_level}%
+                        </label>
+                        <div className="zoom-control-container">
+                            <span className="zoom-label">60%</span>
+                            <input
+                                type="range"
+                                className="zoom-slider"
+                                min="60"
+                                max="120"
+                                step="10"
+                                value={config.zoom_level}
+                                onChange={(e) => setConfig({ ...config, zoom_level: parseInt(e.target.value) })}
+                            />
+                            <span className="zoom-label">120%</span>
+                        </div>
+                    </div>
+
+                    {/* Card Display */}
+                    <div className="studio-section">
+                        <label className="studio-section-label">Show on Cards</label>
+                        <div className="studio-control-group">
+                            <label className="studio-toggle">
+                                <span className="config-option-label">Owner Avatar</span>
                                 <input
-                                    type="range"
-                                    className="zoom-slider"
-                                    min="60"
-                                    max="120"
-                                    step="10"
-                                    value={config.zoom_level}
-                                    onChange={(e) => setConfig({ ...config, zoom_level: parseInt(e.target.value) })}
+                                    type="checkbox"
+                                    hidden
+                                    checked={config.show_owner}
+                                    onChange={(e) => setConfig({ ...config, show_owner: e.target.checked })}
                                 />
-                                <span style={{ minWidth: "40px", fontSize: "12px", color: "#94a3b8" }}>{config.zoom_level}%</span>
-                            </div>
+                                <div className="studio-toggle-inner">
+                                    <div className="studio-toggle-pill" />
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -315,7 +365,7 @@ export default function KanbanConfigBoard({ projectId, viewKey = "GLOBAL" }: Kan
                         onClick={handleSave}
                         disabled={saving}
                     >
-                        {saving ? "Persisting Setup..." : `Apply to ${viewKey === "GLOBAL" ? "Project" : "View"}`}
+                        {saving ? "Saving…" : `Apply to ${viewKey === "GLOBAL" ? "Project" : "View"}`}
                     </button>
                 </div>
             </aside>

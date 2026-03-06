@@ -351,7 +351,7 @@ export default function TemplateDetailPage() {
             );
         }
 
-        if ((template!.status === "CREATED" || template!.status === "ACTIVATED") && template!.is_locked) {
+        if (template!.status === "CREATED" && template!.is_locked) {
             actions.push(
                 <button
                     key="activate"
@@ -359,7 +359,7 @@ export default function TemplateDetailPage() {
                     onClick={handleActivate}
                     disabled={actionLoading}
                 >
-                    {actionLoading ? "Activating…" : "⚡ Activate Template"}
+                    {actionLoading ? "Activating…" : "Activate Template"}
                 </button>
             );
         }
@@ -839,7 +839,7 @@ export default function TemplateDetailPage() {
                                 </span>
                                 {template.is_locked && (
                                     <span className="template-locked-badge">
-                                        🔒 Locked
+                                        Locked
                                     </span>
                                 )}
                             </div>

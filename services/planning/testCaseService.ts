@@ -11,6 +11,7 @@ export type TestCase = {
   status: "SAVED" | "ARCHIVED";
   current_version: number;
   folder: number;
+  tags: string[];
   created_at: string;
   updated_at: string;
 };
@@ -46,6 +47,7 @@ export async function createTestCase(payload: {
   folder_id: number;
   name: string;
   description?: string;
+  tags?: string[];
 }) {
   const { data } = await api.post(
     "/planning/test-cases/",
@@ -101,9 +103,9 @@ export async function saveTestCaseSection(
   testCaseId: number,
   payload: {
     section:
-      | "pre_conditions"
-      | "steps"
-      | "expected_outcomes";
+    | "pre_conditions"
+    | "steps"
+    | "expected_outcomes";
     steps: any[];
   }
 ) {
@@ -123,9 +125,9 @@ export async function importFlowToTestCase(
   payload: {
     flow_id: number;
     target_section:
-      | "pre_conditions"
-      | "steps"
-      | "expected_outcomes";
+    | "pre_conditions"
+    | "steps"
+    | "expected_outcomes";
   }
 ) {
   const { data } = await api.post(

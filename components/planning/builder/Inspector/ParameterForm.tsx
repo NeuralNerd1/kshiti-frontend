@@ -1,12 +1,16 @@
 "use client";
 
+import { useRef } from "react";
 import { ParameterSchema } from "../types";
+import VariableElementPicker from "./VariableElementPicker";
 
 type Props = {
   parameters: Record<string, any>;
   schema: ParameterSchema | null;
   onChange: (params: Record<string, any>) => void;
   readOnly?: boolean;
+  /** Pass projectId to enable the variable/element picker on string inputs */
+  projectId?: number;
 };
 
 export default function ParameterForm({
@@ -14,6 +18,7 @@ export default function ParameterForm({
   schema,
   onChange,
   readOnly = false,
+  projectId,
 }: Props) {
   if (!schema) return null;
 
@@ -47,9 +52,7 @@ export default function ParameterForm({
     ];
 
     // 🔒 READ ONLY HELPERS
-    const block = readOnly
-      ? { disabled: true }
-      : {};
+    const block = readOnly ? { disabled: true } : {};
 
     // ✅ selector_type dropdown
     if (key === "selector_type") {
@@ -195,18 +198,16 @@ export default function ParameterForm({
       );
     }
 
-    // ✅ DEFAULT STRING
+    // ✅ DEFAULT STRING — with variable/element picker
     return (
-      <input
-        className="formInput"
+      <StringField
+        fieldKey={key}
         value={value}
-        disabled={readOnly}
-        onChange={(e) => {
+        readOnly={readOnly}
+        projectId={projectId}
+        onChange={(newVal) => {
           if (readOnly) return;
-          onChange({
-            ...parameters,
-            [key]: e.target.value,
-          });
+          onChange({ ...parameters, [key]: newVal });
         }}
       />
     );
@@ -244,6 +245,66 @@ export default function ParameterForm({
             </div>
           ))}
         </>
+      )}
+    </div>
+  );
+}
+
+/* ===================================================
+   String field with variable/element picker button
+=================================================== */
+function StringField({
+  fieldKey,
+  value,
+  readOnly,
+  projectId,
+  onChange,
+}: {
+  fieldKey: string;
+  value: string;
+  readOnly: boolean;
+  projectId?: number;
+  onChange: (v: string) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  /** Insert text at current cursor position */
+  const insertAtCursor = (text: string) => {
+    const el = inputRef.current;
+    if (!el) {
+      onChange(value + text);
+      return;
+    }
+
+    const start = el.selectionStart ?? value.length;
+    const end = el.selectionEnd ?? value.length;
+    const newVal =
+      value.slice(0, start) + text + value.slice(end);
+    onChange(newVal);
+
+    // Restore focus + move cursor
+    requestAnimationFrame(() => {
+      el.focus();
+      const pos = start + text.length;
+      el.setSelectionRange(pos, pos);
+    });
+  };
+
+  return (
+    <div className="param-string-row">
+      <input
+        ref={inputRef}
+        className="formInput param-string-input"
+        value={value}
+        disabled={readOnly}
+        onChange={(e) => onChange(e.target.value)}
+      />
+
+      {!readOnly && projectId != null && (
+        <VariableElementPicker
+          projectId={projectId}
+          onInsert={insertAtCursor}
+        />
       )}
     </div>
   );

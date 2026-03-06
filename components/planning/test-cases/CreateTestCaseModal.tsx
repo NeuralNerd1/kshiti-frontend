@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createTestCase } from "@/services/planning/testCaseService";
+import TagsInput from "@/components/common/TagsInput";
 
 export default function CreateTestCaseModal({
   folderId,
@@ -14,6 +15,7 @@ export default function CreateTestCaseModal({
 }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleCreate = async () => {
@@ -26,6 +28,7 @@ export default function CreateTestCaseModal({
         name,
         description,
         folder_id: folderId,
+        tags,
       });
 
       onSuccess(created);
@@ -44,14 +47,29 @@ export default function CreateTestCaseModal({
           placeholder="Test case name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && name.trim()) handleCreate();
+          }}
         />
 
         <textarea
           className="modal-textarea"
-          placeholder="Description"
+          placeholder="Description (optional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        {/* Tags */}
+        <div className="modal-field-group">
+          <label className="modal-field-label">
+            Tags
+          </label>
+          <TagsInput
+            value={tags}
+            onChange={setTags}
+            placeholder="Add tag and press Enter…"
+          />
+        </div>
 
         <div className="modal-actions">
           <button
