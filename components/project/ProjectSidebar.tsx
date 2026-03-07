@@ -77,7 +77,12 @@ export default function ProjectSidebar({
         onClick={() => {
           if (path === "execution/engine") {
             const token = localStorage.getItem("access_token");
-            window.open(`http://localhost:3000/?token=${token}`, "_blank");
+            const isProduction = window.location.hostname === "planning.kshiti.io";
+            const targetUrl = isProduction
+              ? "https://www.kshiti.io"
+              : (process.env.NEXT_PUBLIC_EXEC_APP_URL || "http://localhost:3000");
+
+            window.open(`${targetUrl}/?token=${token}`, "_blank");
           } else {
             router.push(path);
           }
